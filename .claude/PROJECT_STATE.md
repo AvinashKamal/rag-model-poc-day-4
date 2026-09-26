@@ -147,3 +147,15 @@ STATUS: done
 FILES_CHANGED: frontend/app/layout.tsx (next/font/google: Archivo + IBM Plex Mono, zero new deps); frontend/app/globals.css (full token rewrite: vermillion accent light+dark, meter ramp, font tokens, radius flip to 0, new stampIn/sweep keyframes; all surface/text/border/gridline/status tokens byte-preserved); frontend/app/page.tsx (className renames only — header->masthead, searchCard->console — hooks/handlers/refs untouched); frontend/app/page.module.css (full rewrite); frontend/app/components/{DomainSelector,QuestionForm,AnswerPanel,ScoreMeter,StatusPanel}.module.css (restyle only); frontend/app/components/CitationCard.tsx + .module.css (wrapper-markup only, oversized mono numeral); frontend/app/error.module.css (button restyle only)
 KEY_DECISIONS: avoided composes: card-shell/eyebrow in AnswerPanel.answerCard/StatusPanel.panel/CitationCard.index (cross-stylesheet specificity risk with the new sharp-radius/font tokens), writing those rules self-contained instead; no new motion library (pure CSS keyframes, covered for free by the existing global prefers-reduced-motion override); dark-mode accent-strong hover fills paired with dark --on-accent ink, not white, to stay AA-compliant.
 OPEN_ISSUES: no live "answer with citations" render captured (shared backend returned 500 on /query in the build agent's environment, backend/**-scope, not touched) — AnswerPanel/CitationCard rendering verified by code review + byte-diff of citation-safety logic only, not a live browser render. p3-triage confirmed no P0/P1; flagged (project-level, not this milestone) that this repo has no git/VCS and the capture hook above was broken all session — both addressed 2026-09-26.
+
+## 2026-09-26 — backend
+STATUS: done
+FILES_CHANGED: backend/pyproject.toml, backend/tests/test_ingestion_pipeline.py, backend/tests/test_retrieval_query.py
+KEY_DECISIONS: Pinned pydantic-settings to >=2.15.0 based on actual installed version rather than guessing a version; verified the two ruff errors were purely I001 import-order before using --fix, per the instruction not to blindly auto-fix mixed violation types.
+OPEN_ISSUES: none
+
+## 2026-09-26 — backend
+STATUS: done
+FILES_CHANGED: backend/app/schemas.py, backend/tests/test_main.py, backend/tests/test_ingestion_pipeline.py, backend/tests/test_retrieval_query.py (import-order fix only), mcp-server/pyproject.toml, mcp-server/tests/__init__.py (new), mcp-server/tests/test_localguard.py (new)
+KEY_DECISIONS: Did not assert 422 for whitespace-only question — current min_length doesn't strip whitespace, so that would be a false test; flagged as a known, separate gap instead of silently overclaiming. Mirrored backend's pytest scaffolding conventions (dependency-groups/testpaths) for mcp-server rather than inventing a new style.
+OPEN_ISSUES: Whitespace-only question ("   ") still passes QueryRequest validation (not stripped by min_length) — not in this task's scope but worth a future ticket if it matters for real traffic.

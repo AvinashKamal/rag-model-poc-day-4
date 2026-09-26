@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 class IngestRequest(BaseModel):
     domain: str
     source: str
-    query: str
+    query: str = Field(min_length=1, max_length=2000)
     max_results: int = Field(default=10, gt=0, le=100)
 
 
@@ -60,7 +60,7 @@ class DomainInfo(BaseModel):
 
 
 class QueryRequest(BaseModel):
-    question: str
+    question: str = Field(min_length=1, max_length=2000)
     domains: list[str] | None = None
     top_k: int = Field(default=5, gt=0, le=50)
 

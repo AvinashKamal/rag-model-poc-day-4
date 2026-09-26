@@ -8,6 +8,7 @@ Route by path, not by guessing:
 - Anything touching `frontend/**` → the `frontend` agent.
 - Anything touching `backend/**`, `mcp-server/**`, `load-tests/**`, or `eval/**` → the `backend` agent.
 - After either agent reports a completed milestone, always spawn `p3-triage` before considering the task done — this is a quality gate, not optional.
+- Run `/security-scan` for a dedicated security pass (secrets, SSRF, injection, unsafe rendering, auth/CORS, dependency pinning) — distinct from `backend-review`/`frontend-review` (code quality) and `p3-triage` (lighter cross-cutting gate). It finds issues via the `security-review` agent, then routes `AUTO-FIXABLE` findings to `backend`/`frontend` by path and gates the fix with `p3-triage`, same as any other delegated task.
 
 ## Memory discipline
 

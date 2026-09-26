@@ -30,12 +30,12 @@ A multi-domain RAG application for reviewing scientific literature. A user picks
 | PubMed abstract quality | `fetch_pubmed()` always returned `abstract: ""` (ESummary has no abstracts) — silently degraded medicine/agriculture/environmental_science | Fixed: real EFetch call, `_parse_pubmed_abstracts` parses structured `AbstractText` elements |
 | Test coverage | 0% — no pytest suite existed anywhere | `backend/app`: 78% (389 stmts, 85 missed); `shared/domain_lib`: 0% (still no tests, 392 lines uncovered) |
 | HTTP client timeouts | Missing at start of day; added same day (60s embed, 30s rerank) | Present + upgraded to singleton clients with `threading.Lock` double-checked pattern for all 4 upstream clients |
-| Dependency pinning | Unpinned at start of day; floors added same day for fastapi/uvicorn/qdrant-client/openai/opentelemetry-* | All of 09-19's pins still hold, but `pydantic-settings` (used directly by `Settings`) has no floor — missed by both the 09-19 fix and this session's refactor |
+| Dependency pinning | Unpinned at start of day; floors added same day for fastapi/uvicorn/qdrant-client/openai/opentelemetry-* | Fixed: `pydantic-settings>=2.15.0` pin closed the last unfloored dependency (`/security-scan` pass, 2026-09-26) |
 | Eval gold set size | 2 questions/domain, `relevant_ids` unannotated (`recall@k` always `null`) | 24 questions (4/domain × 6), `relevant_ids` populated for citation-bearing questions |
-| Secrets in logs/traces | Not checked | **New P1**: `NCBI_API_KEY` is a PubMed URL query param; any failed PubMed call propagates the raw key into OTel trace spans and application logs |
-| SSRF / local-only guard | Not checked | **New P1**: `_localguard.target_is_local()` uses substring containment (`"evil-backend.attacker.com" in base_url` style check) — bypassable, confirmed via direct execution |
-| `/query` 502 path test coverage | N/A (no tests existed) | Still untested at the `TestClient` HTTP layer — `UpstreamServiceError`→502 mapping only exercised via direct `answer_query()` unit calls |
-| ruff import-sort errors | Not tracked | 3 (1 each in `test_ingestion_pipeline.py`, `test_main.py`, `test_retrieval_query.py`) — auto-fixable, still unfixed |
+| Secrets in logs/traces | Not checked | Fixed: `corpus.py`'s `_raise_for_status_redacted()` strips the query string (carries `NCBI_API_KEY`) before any `httpx.HTTPStatusError` reaches logs/OTel spans — verified by `p3-triage` including the no-query-string and unreachable-`None`-request edge cases |
+| SSRF / local-only guard | Not checked | Fixed: `_localguard.target_is_local()` now parses `urlparse(...).hostname` instead of substring containment — verified by `p3-triage` against the bypass, userinfo-smuggling, case, and near-miss-suffix cases. **New P2**: still zero automated tests for this function anywhere under `mcp-server/**` |
+| `/query` 502 path test coverage | N/A (no tests existed) | Fixed: `test_main.py::test_query_maps_upstream_service_error_to_502_without_leaking_details` added; `p3-triage` confirmed it exercises the real route/monkeypatch path, not a bypassed mock |
+| ruff import-sort errors | Not tracked | Fixed: `ruff check backend/` clean (`/security-scan` pass, 2026-09-26) |
 | Docker image size (backend) | Not measured | 443MB disk / 105MB content — single-stage build bakes in a ~61MB `pip install uv` bootstrap layer |
 | Cyclomatic complexity | Not measured | `radon cc`: 74 blocks, avg A (2.55), worst C (13, `answer_query` — reasonable for a 5-stage pipeline) |
 | CORS | Missing until fixed same day 09-19 | Fixed, unchanged since |
@@ -85,18 +85,19 @@ A multi-domain RAG application for reviewing scientific literature. A user picks
 
 ## What's left to do
 
-**New findings from this session's `backend-review`/`frontend-review` passes, not yet fixed (highest priority first):**
-- **P1 — secret leak into logs/traces**: `shared/domain_lib/src/domain_lib/corpus.py` passes `NCBI_API_KEY` as a URL query param; any failed PubMed call (429, 5xx, network blip) propagates the raw key into OTel spans and application logs via `httpx.HTTPStatusError`'s string representation. Fix: strip query params before logging/recording exceptions, or move the key to a header.
-- **P1 — SSRF guard bypassable**: `mcp-server/src/orchestrator_mcp/tools/_localguard.py`'s `target_is_local()` uses substring containment instead of proper URL-host parsing — `"http://evil-backend.attacker.com" ` passes. Fix: `urllib.parse.urlsplit(base_url).hostname in _ALLOWED_HOSTS`.
+**`/security-scan` fix pass completed 2026-09-26** (interrupted mid-way by a session crash, resumed and finished same day; `p3-triage`-gated, no P0/P1 remaining): fixed the `NCBI_API_KEY` log/trace leak, the SSRF substring-containment bypass, the missing `/query` 502 regression test, the `javascript:`-URL citation-link injection path, the `k6.py` subprocess env-clobbering bug, the unpinned `pydantic-settings` dependency, and the 2 ruff `I001` import-sort errors. Full detail in the v0→v1 table above.
+
+**New findings from `p3-triage`'s review of that fix pass, not yet fixed:**
+- **P2 — no test coverage for `_localguard.target_is_local()`**: zero automated tests exist anywhere under `mcp-server/**`, and this function is the actual SSRF-guard logic the fix pass targeted — a future edit could silently reintroduce the substring bypass with nothing catching it.
+- **P2 — no `min_length`/blank-string guard** on `QueryRequest.question` / `IngestRequest.query` alongside the new `max_length=2000` — an empty/whitespace-only string still passes and drives a full embed→retrieve→rerank→LLM round trip (or a full external fetch for ingest) for nothing.
+- **P3 — redacted PubMed exception message drops httpx's original error framing** (`corpus.py`'s `_raise_for_status_redacted`) — cosmetic only, no functional/security impact.
+
+**Still open from the earlier `backend-review`/`frontend-review` passes (unrelated to the security scan — out of its checklist scope):**
 - **P1 — CitationCard index numeral contrast**: `color: var(--gridline)` on the bibliography index numeral measures 1.24–1.29:1 (light/dark), failing AA even at large-text size — this is the only visual link between an inline `[n]` marker and its citation. Likely a v2 redesign regression (`--gridline` chosen as a border color, never vetted as text). Fix: recolor to `--text-secondary` or `--accent-strong` (both ≥5:1 against both surfaces per existing measurements).
-- **P1 — 502 path untested**: `UpstreamServiceError`→502 mapping in `main.py`'s `/query` handler has no `TestClient`-level test exercising it end-to-end.
-- **P2 — ruff import-sort**: 3 auto-fixable `I001` violations (`test_ingestion_pipeline.py`, `test_main.py`, `test_retrieval_query.py`).
-- **P2 — `pydantic-settings` unpinned** in `backend/pyproject.toml`, unlike every sibling dependency.
 - **P2 — `shared/domain_lib` has zero tests** (392 lines, 0% coverage) despite being correctness-critical shared code for both `backend` and `mcp-server`.
 - **P2 — OpenAPI schema incomplete**: `/admin/ingest`, `/admin/ingest/{run_id}`, `/query` only declare 200/422 — the real 400/404/502 paths exist in code but aren't declared, invisible to schema-driven clients.
 - **P2 — `AnswerPanel`/`react-markdown` not code-split** from the initial route bundle despite only rendering post-query.
 - **P3 — 0% frontend test coverage**, no jest/vitest configured.
-- **P3 — no length validation** on `QueryRequest.question` / `IngestRequest.query` (empty string passes, still drives a full pipeline round trip).
 - **P3 — `StatusPanel` hardcoded hex colors** (`#fff`, `#3a2900`) bypass the token layer; not a live violation but a maintenance risk (this is likely how the CitationCard regression above slipped through unnoticed).
 
 **Not started (explicitly deferred to Phase 2 by the approved plan):**
@@ -111,10 +112,10 @@ A multi-domain RAG application for reviewing scientific literature. A user picks
 
 ## Ideas to improve the application further
 
-- **Fix the two new P1 security findings first** (NCBI key leak, SSRF substring bypass) — both are quick, contained fixes with disproportionate risk if left in place.
+- **Add a regression test for `_localguard.target_is_local()`** — the SSRF-guard logic itself has zero coverage under `mcp-server/**`, flagged by `p3-triage` right after the fix pass that hardened it.
+- **Add `min_length`/blank-string validation** to `QueryRequest.question` / `IngestRequest.query`, alongside the `max_length` already added.
 - **Fix the CitationCard contrast regression** — one-line CSS fix, closes a real accessibility violation introduced by the v2 redesign.
 - **Add a `shared/domain_lib` test suite** — it's shared, correctness-critical code (including the just-fixed EFetch parsing) with zero coverage today.
-- **Close the `/query` 502 path test gap** and the 3 ruff import-sort errors — both cheap, both flagged twice now (once by p3-triage, once by backend-review).
 - **Code-split `AnswerPanel`/`react-markdown`** out of the initial frontend bundle — real, measured 39.1 kB of route weight not needed on first paint.
 - **Widen the ingested corpus per domain** before any demo — 48 points total (~8/domain) is enough to prove the pipeline works end-to-end but too thin to show off retrieval quality or trigger interesting abstentions.
 - **Phase 2 full-text ingestion** is the natural next big lever on answer quality — abstracts cap how specific/detailed an answer can ever be.

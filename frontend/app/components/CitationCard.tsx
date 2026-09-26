@@ -15,6 +15,16 @@ function CitationCard({ citation, index }: CitationCardProps) {
   const staggerStyle: CSSProperties = {
     animationDelay: `${index * 40}ms`,
   };
+  // citation.url comes from upstream corpus metadata (arXiv/PubMed/Semantic
+  // Scholar via the backend), not something we generate ourselves. Treat it
+  // as untrusted: only render it as a live, clickable link when it's
+  // actually http(s), so a spoofed/compromised source can't smuggle a
+  // javascript: (or other) URL into a clickable anchor. Otherwise fall back
+  // to inert text, mirroring AnswerLink/AnswerImage in AnswerPanel.
+  const hasSafeUrl =
+    !!citation.url &&
+    (citation.url.startsWith("http://") ||
+      citation.url.startsWith("https://"));
 
   return (
     <div
@@ -25,7 +35,7 @@ function CitationCard({ citation, index }: CitationCardProps) {
       <span className={styles.index}>{position}</span>
       <div className={styles.body}>
         <div className={styles.head}>
-          {citation.url ? (
+          {hasSafeUrl ? (
             <a
               href={citation.url}
               target="_blank"

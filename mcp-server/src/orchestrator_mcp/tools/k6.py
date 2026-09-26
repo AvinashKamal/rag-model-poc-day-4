@@ -5,6 +5,7 @@
 # without querying Grafana.
 
 import json
+import os
 import shutil
 import subprocess
 import uuid
@@ -19,7 +20,8 @@ def trigger_k6_run(script_path: str, base_url: str = "http://localhost:8000") ->
     if not target_is_local(base_url):
         return {"error": f"refusing to run k6 against non-local target '{base_url}'"}
 
-    if shutil.which("k6") is None:
+    k6_path = shutil.which("k6")
+    if k6_path is None:
         return {"error": "k6 binary not found on PATH"}
 
     script = Path(script_path)
@@ -31,8 +33,11 @@ def trigger_k6_run(script_path: str, base_url: str = "http://localhost:8000") ->
     summary_path = _RESULTS_DIR / f"{run_id}.json"
 
     proc = subprocess.run(
-        ["k6", "run", f"--summary-export={summary_path}", str(script)],
-        env={"BASE_URL": base_url},
+        [k6_path, "run", f"--summary-export={summary_path}", str(script)],
+        # {**os.environ, ...}, not a bare {"BASE_URL": ...}: the latter
+        # replaces the child's *entire* environment, dropping PATH/HOME/etc
+        # that k6 itself needs to run.
+        env={**os.environ, "BASE_URL": base_url},
         capture_output=True,
         text=True,
         timeout=600,

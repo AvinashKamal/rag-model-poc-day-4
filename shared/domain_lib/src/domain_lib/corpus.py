@@ -18,6 +18,32 @@ SEMANTIC_SCHOLAR_SEARCH = "https://api.semanticscholar.org/graph/v1/paper/search
 _ATOM_NS = {"atom": "http://www.w3.org/2005/Atom"}
 
 
+def _raise_for_status_redacted(resp: httpx.Response) -> None:
+    """Same as `resp.raise_for_status()`, but strips the query string from
+    the raised exception first.
+
+    `httpx.HTTPStatusError.__str__` embeds the full request URL. PubMed's
+    ESearch/ESummary/EFetch calls carry `NCBI_API_KEY` in the query string
+    (unlike Semantic Scholar's key, which is header-only and never hits the
+    URL) — if that raw exception propagated, it would land in
+    `logger.exception(...)` (backend/app/main.py) and OTel
+    `span.record_exception(...)` (backend/app/ingestion/pipeline.py) with the
+    key intact. Raised with `from None` (not `from exc`) so the redacted
+    exception doesn't chain to the original one, since Python tracebacks
+    print the full chain including the suppressed cause's message.
+    """
+    try:
+        resp.raise_for_status()
+    except httpx.HTTPStatusError as exc:
+        redacted_url = exc.request.url.copy_with(query=None)
+        raise httpx.HTTPStatusError(
+            f"{exc.response.status_code} {exc.response.reason_phrase} "
+            f"for url '{redacted_url}'",
+            request=exc.request,
+            response=exc.response,
+        ) from None
+
+
 async def _get_with_backoff(
     client: httpx.AsyncClient, url: str, **kwargs
 ) -> httpx.Response:
@@ -25,11 +51,11 @@ async def _get_with_backoff(
     for attempt in range(4):
         resp = await client.get(url, **kwargs)
         if resp.status_code != 429:
-            resp.raise_for_status()
+            _raise_for_status_redacted(resp)
             return resp
         await asyncio.sleep(delay)
         delay *= 2
-    resp.raise_for_status()
+    _raise_for_status_redacted(resp)
     return resp
 
 

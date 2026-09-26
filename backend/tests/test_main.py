@@ -10,6 +10,8 @@ test_ingestion_pipeline.py.
 
 from __future__ import annotations
 
+import app.main as main_module
+from app.errors import UpstreamServiceError
 from app.main import app
 from fastapi.testclient import TestClient
 
@@ -59,3 +61,35 @@ def test_admin_ingest_status_unknown_run_id_is_404():
 def test_query_rejects_unknown_domain():
     resp = client.post("/query", json={"question": "q?", "domains": ["not-a-domain"]})
     assert resp.status_code == 400
+
+
+def test_query_rejects_empty_question():
+    # QueryRequest.question has min_length=1 precisely so an empty string
+    # is rejected by validation (422) before it can drive a full
+    # embed/search/rerank/LLM round trip for nothing.
+    resp = client.post("/query", json={"question": ""})
+    assert resp.status_code == 422
+    # NOTE: pydantic's min_length does not strip whitespace, so a
+    # whitespace-only question ("   ") currently still passes this
+    # validator — that's a separate, not-yet-fixed gap, not asserted here.
+
+
+def test_query_maps_upstream_service_error_to_502_without_leaking_details(
+    monkeypatch,
+):
+    # Regression test for the 502 path: /query must never echo the raw
+    # exception text (which can contain upstream response bodies, or in
+    # other stages, redacted-but-still-sensitive details) back to the
+    # caller — only the fixed, safe "which service failed" message.
+    def _raise_upstream_error(request):
+        raise UpstreamServiceError("qdrant", "connection refused: 10.0.0.5:6333")
+
+    monkeypatch.setattr(main_module, "answer_query", _raise_upstream_error)
+
+    resp = client.post("/query", json={"question": "q?"})
+
+    assert resp.status_code == 502
+    detail = resp.json()["detail"]
+    assert detail == "upstream service 'qdrant' is unavailable"
+    assert "10.0.0.5" not in detail
+    assert "connection refused" not in detail
