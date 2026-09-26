@@ -1,0 +1,77 @@
+.label {
+  composes: eyebrow from global;
+  display: block;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* Rectangular outline tabs ("punch card" look), not soft-tint pills:
+   sharp corners come from --radius-pill being 0 (Shape Consistency Lock),
+   the 2px border reads as a physical edge rather than a soft chip. */
+.chip {
+  border: 0.125rem solid var(--border-hairline);
+  background: var(--surface-1);
+  color: var(--text-secondary);
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out-soft),
+    background var(--duration-fast) var(--ease-out-soft),
+    color var(--duration-fast) var(--ease-out-soft),
+    transform var(--duration-fast) var(--ease-out-soft);
+}
+
+.chip:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.chip:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.chipSelected {
+  background: var(--accent-soft);
+  border-color: var(--accent-strong);
+  color: var(--accent-strong);
+  animation: stampIn var(--duration-dramatic) var(--ease-snap) both;
+}
+
+.hint {
+  margin: var(--space-3) 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+.error {
+  margin: var(--space-3) 0 0;
+  font-size: var(--font-size-sm);
+  /* status-serious was designed for badges/fills, not text-on-surface (its
+     2.57:1 here fails AA); status-critical already clears 4.5:1 as plain
+     text in both modes and reads correctly as an error message. */
+  color: var(--status-critical);
+}
+
+.skeletonRow {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.skeletonChip {
+  width: 5.625rem; /* 90px */
+  height: 1.875rem; /* 30px */
+  border-radius: var(--radius-pill);
+  background: var(--gridline);
+  animation: pulse 1.4s ease-in-out infinite;
+}

@@ -1,0 +1,107 @@
+{
+  "title": "Retrieval Quality",
+  "uid": "retrieval-quality",
+  "schemaVersion": 39,
+  "tags": ["rag-poc", "eval"],
+  "time": { "from": "now-7d", "to": "now" },
+  "refresh": "",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Recall@k over time",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        { "expr": "avg(eval_recall_at_k) by (domain, k)", "legendFormat": "{{domain}} k={{k}}", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "color": { "mode": "fixed", "fixedColor": "#2a78d6" },
+          "custom": { "lineWidth": 2, "fillOpacity": 0 }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 2,
+      "title": "Groundedness score over time",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        { "expr": "avg(eval_groundedness_score) by (domain)", "legendFormat": "{{domain}}", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "color": { "mode": "fixed", "fixedColor": "#eb6834" },
+          "custom": { "lineWidth": 2, "fillOpacity": 0 }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 3,
+      "title": "Abstention accuracy",
+      "type": "gauge",
+      "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        { "expr": "100 * avg(eval_abstention_accuracy)", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": null, "color": "#d03b3b" },
+              { "value": 80, "color": "#fab219" },
+              { "value": 90, "color": "#0ca30c" }
+            ]
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 4,
+      "title": "Unsupported-claim rate",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        { "expr": "avg(eval_unsupported_claim_rate) by (domain)", "legendFormat": "{{domain}}", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 0,
+            "thresholdsStyle": { "mode": "line" }
+          },
+          "color": { "mode": "fixed", "fixedColor": "#2a78d6" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": null, "color": "#0ca30c" },
+              { "value": 0.05, "color": "#fab219" },
+              { "value": 0.1, "color": "#d03b3b" }
+            ]
+          }
+        },
+        "overrides": []
+      }
+    }
+  ]
+}

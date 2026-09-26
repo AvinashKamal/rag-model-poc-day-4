@@ -1,0 +1,30 @@
+.wrap {
+  composes: page-shell from global;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.retryButton {
+  background: var(--accent);
+  color: var(--on-accent);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--font-size-md);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background var(--duration-fast) var(--ease-out-soft),
+    transform var(--duration-fast) var(--ease-out-soft);
+}
+
+.retryButton:hover {
+  background: var(--accent-strong);
+}
+
+.retryButton:active {
+  transform: scale(0.98);
+}

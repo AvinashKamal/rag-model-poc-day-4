@@ -1,0 +1,290 @@
+{
+  "literature/agriculture/a-progressive-image-restoration-network-for-high-order-degradation-imaging-in-re.md": {
+    "mtime": 1790399987.7230918,
+    "seen": 1790400612.1806736,
+    "ast_hash": "85eac15c74d731826ac6f320f14b1c99",
+    "semantic_hash": "85eac15c74d731826ac6f320f14b1c99"
+  },
+  "literature/agriculture/aggregated-deep-local-features-for-remote-sensing-image-retrieval.md": {
+    "mtime": 1790399987.7229583,
+    "seen": 1790400612.1806812,
+    "ast_hash": "567f21a583460b92946da5e18504cb57",
+    "semantic_hash": "567f21a583460b92946da5e18504cb57"
+  },
+  "literature/agriculture/an-efficient-data-warehouse-for-crop-yield-prediction.md": {
+    "mtime": 1790399987.722482,
+    "seen": 1790400612.180684,
+    "ast_hash": "d37505a726e94ba7571ef6ebea5796c6",
+    "semantic_hash": "d37505a726e94ba7571ef6ebea5796c6"
+  },
+  "literature/agriculture/change-agent-towards-interactive-comprehensive-remote-sensing-change-interpretat.md": {
+    "mtime": 1790399987.72206,
+    "seen": 1790400612.1806858,
+    "ast_hash": "d68704b93f8fda9842358279d49e0e95",
+    "semantic_hash": "d68704b93f8fda9842358279d49e0e95"
+  },
+  "literature/agriculture/estimating-crop-yields-with-remote-sensing-and-deep-learning.md": {
+    "mtime": 1790399987.7223263,
+    "seen": 1790400612.1806874,
+    "ast_hash": "883d94440a98180b265a3362da91b7f3",
+    "semantic_hash": "883d94440a98180b265a3362da91b7f3"
+  },
+  "literature/agriculture/remote-sensing-spatiotemporal-vision-language-models-a-comprehensive-survey.md": {
+    "mtime": 1790399987.7228217,
+    "seen": 1790400612.1806886,
+    "ast_hash": "393bae72f67c21ded23d2fd04ce897d6",
+    "semantic_hash": "393bae72f67c21ded23d2fd04ce897d6"
+  },
+  "literature/agriculture/timesenclip-a-time-series-vision-language-model-for-remote-sensing.md": {
+    "mtime": 1790399987.7226603,
+    "seen": 1790400612.1806903,
+    "ast_hash": "5c79def64f990766fa89bf22ff4982c1",
+    "semantic_hash": "5c79def64f990766fa89bf22ff4982c1"
+  },
+  "literature/agriculture/vision-language-modeling-meets-remote-sensing-models-datasets-and-perspectives.md": {
+    "mtime": 1790399987.7232234,
+    "seen": 1790400612.1806915,
+    "ast_hash": "2b996a9d93799d8119eff32a9d096628",
+    "semantic_hash": "2b996a9d93799d8119eff32a9d096628"
+  },
+  "literature/energy/cooperation-and-storage-tradeoffs-in-power-grids-with-renewable-energy-resources.md": {
+    "mtime": 1790399987.7582278,
+    "seen": 1790400612.1806927,
+    "ast_hash": "d54bfcd5a3ba2d20cb10ef5f633491d3",
+    "semantic_hash": "d54bfcd5a3ba2d20cb10ef5f633491d3"
+  },
+  "literature/energy/distributed-real-time-power-balancing-in-renewable-integrated-power-grids-with-s.md": {
+    "mtime": 1790399987.7580063,
+    "seen": 1790400612.1806939,
+    "ast_hash": "91873ad89eb9e1b268ba85ca625e8867",
+    "semantic_hash": "91873ad89eb9e1b268ba85ca625e8867"
+  },
+  "literature/energy/integrating-power-electronics-based-energy-storages-to-power-systems-a-review-on.md": {
+    "mtime": 1790399987.7590694,
+    "seen": 1790400612.180695,
+    "ast_hash": "27374eee1e5d3349ad37410b63b11c3a",
+    "semantic_hash": "27374eee1e5d3349ad37410b63b11c3a"
+  },
+  "literature/energy/privacy-preserving-distributed-control-for-a-networked-battery-energy-storage-sy.md": {
+    "mtime": 1790399987.7592611,
+    "seen": 1790400612.1806965,
+    "ast_hash": "d3412b584ca35d7f4dc800202a74d8c9",
+    "semantic_hash": "d3412b584ca35d7f4dc800202a74d8c9"
+  },
+  "literature/energy/representation-of-the-german-transmission-grid-for-renewable-energy-sources-impa.md": {
+    "mtime": 1790399987.7583778,
+    "seen": 1790400612.180698,
+    "ast_hash": "7df657c2d11b453f3e89477d336d891a",
+    "semantic_hash": "7df657c2d11b453f3e89477d336d891a"
+  },
+  "literature/energy/shared-energy-storage-management-for-renewable-energy-integration-in-smart-grid.md": {
+    "mtime": 1790399987.758512,
+    "seen": 1790400612.180699,
+    "ast_hash": "fcb7b4d7fcdf3d48461be41bd573395f",
+    "semantic_hash": "fcb7b4d7fcdf3d48461be41bd573395f"
+  },
+  "literature/energy/sizing-of-energy-storage-system-for-virtual-inertia-emulation.md": {
+    "mtime": 1790399987.758752,
+    "seen": 1790400612.1807003,
+    "ast_hash": "075d74fabeb92f2f4d7686b05b2b5e0a",
+    "semantic_hash": "075d74fabeb92f2f4d7686b05b2b5e0a"
+  },
+  "literature/energy/techno-economic-analysis-of-renewable-energy-generation-at-the-south-pole.md": {
+    "mtime": 1790399987.758929,
+    "seen": 1790400612.1807015,
+    "ast_hash": "867c841679c39f22967277e85026f32b",
+    "semantic_hash": "867c841679c39f22967277e85026f32b"
+  },
+  "literature/environmental_science/climate-adaptation-with-reinforcement-learning-experiments-with-flooding-and-tra.md": {
+    "mtime": 1790399987.7406082,
+    "seen": 1790400612.1807027,
+    "ast_hash": "63ea0720a25b148abf75eccb39703dcc",
+    "semantic_hash": "63ea0720a25b148abf75eccb39703dcc"
+  },
+  "literature/environmental_science/climatext-a-dataset-for-climate-change-topic-detection.md": {
+    "mtime": 1790399987.7409475,
+    "seen": 1790400612.180704,
+    "ast_hash": "9211069148af1614b8a4b276a0448ce6",
+    "semantic_hash": "9211069148af1614b8a4b276a0448ce6"
+  },
+  "literature/environmental_science/future-climate-change-projections-over-the-indian-region.md": {
+    "mtime": 1790399987.7402887,
+    "seen": 1790400612.1807053,
+    "ast_hash": "46f73305d29b2398f232166e637afde0",
+    "semantic_hash": "46f73305d29b2398f232166e637afde0"
+  },
+  "literature/environmental_science/impact-of-anthropogenic-climate-change-on-the-east-asian-summer-monsoon.md": {
+    "mtime": 1790399987.7412148,
+    "seen": 1790400612.1807063,
+    "ast_hash": "90bac5503db6dae77f99b7c83d391ba1",
+    "semantic_hash": "90bac5503db6dae77f99b7c83d391ba1"
+  },
+  "literature/environmental_science/invasive-species-extreme-fire-risk-and-toxin-release-under-a-changing-climate.md": {
+    "mtime": 1790399987.7404356,
+    "seen": 1790400612.1807077,
+    "ast_hash": "c09f1fbb4c0d3f43d7b2b79ee0b0d551",
+    "semantic_hash": "c09f1fbb4c0d3f43d7b2b79ee0b0d551"
+  },
+  "literature/environmental_science/learning-radiative-transfer-models-for-climate-change-applications-in-imaging-sp.md": {
+    "mtime": 1790399987.7400875,
+    "seen": 1790400612.180709,
+    "ast_hash": "31cb73df41788386335980cd5ce4bae5",
+    "semantic_hash": "31cb73df41788386335980cd5ce4bae5"
+  },
+  "literature/environmental_science/night-sky-brightness-monitoring-in-hong-kong-a-city-wide-light-pollution-assessm.md": {
+    "mtime": 1790399987.7407594,
+    "seen": 1790400612.1807103,
+    "ast_hash": "afff6e6ea1d6948a08921360bf5499c4",
+    "semantic_hash": "afff6e6ea1d6948a08921360bf5499c4"
+  },
+  "literature/environmental_science/precipitation-extremes-under-climate-change.md": {
+    "mtime": 1790399987.7410836,
+    "seen": 1790400612.1807117,
+    "ast_hash": "b91d65ebebb1a8dfdda0c159e8987702",
+    "semantic_hash": "b91d65ebebb1a8dfdda0c159e8987702"
+  },
+  "literature/logistics/a-network-flow-approach-to-optimal-scheduling-in-supply-chain-logistics.md": {
+    "mtime": 1790399987.691018,
+    "seen": 1790400612.180713,
+    "ast_hash": "f1dce3bdc93e9e8f04390e192349a7d1",
+    "semantic_hash": "f1dce3bdc93e9e8f04390e192349a7d1"
+  },
+  "literature/logistics/a-two-stage-stochastic-programming-model-for-blood-supply-chain-management-consi.md": {
+    "mtime": 1790399987.6902905,
+    "seen": 1790400612.1807141,
+    "ast_hash": "28be64039a2c9dc97dfb549b2584c5af",
+    "semantic_hash": "28be64039a2c9dc97dfb549b2584c5af"
+  },
+  "literature/logistics/an-integrated-supply-chain-network-design-for-advanced-air-mobility-aircraft-man.md": {
+    "mtime": 1790399987.6905243,
+    "seen": 1790400612.1807156,
+    "ast_hash": "dd54e9144d4ecbb6c12cbb1429401847",
+    "semantic_hash": "dd54e9144d4ecbb6c12cbb1429401847"
+  },
+  "literature/logistics/coordinated-communication-and-inventory-optimization-in-multi-retailer-supply-ch.md": {
+    "mtime": 1790399987.6906126,
+    "seen": 1790400612.1807168,
+    "ast_hash": "e874de731d54c6fe023d982b62f2fd43",
+    "semantic_hash": "e874de731d54c6fe023d982b62f2fd43"
+  },
+  "literature/logistics/exploitation-of-material-consolidation-trade-offs-in-multi-tier-complex-supply-n.md": {
+    "mtime": 1790399987.6910925,
+    "seen": 1790400612.1807177,
+    "ast_hash": "04d3a7cb76ccb686c245d57498db7ffa",
+    "semantic_hash": "04d3a7cb76ccb686c245d57498db7ffa"
+  },
+  "literature/logistics/large-language-models-for-supply-chain-decisions.md": {
+    "mtime": 1790399987.6907594,
+    "seen": 1790400612.1807191,
+    "ast_hash": "2233787c73ecbee0dd64914f1bd0e068",
+    "semantic_hash": "2233787c73ecbee0dd64914f1bd0e068"
+  },
+  "literature/logistics/sok-analysis-of-software-supply-chain-security-by-establishing-secure-design-pro.md": {
+    "mtime": 1790399987.6909368,
+    "seen": 1790400612.1807206,
+    "ast_hash": "978ebcd23f8ec9fade8168890d8a6e12",
+    "semantic_hash": "978ebcd23f8ec9fade8168890d8a6e12"
+  },
+  "literature/logistics/traceability-as-an-integral-part-of-supply-chain-logistics-management-an-analyti.md": {
+    "mtime": 1790399987.6906924,
+    "seen": 1790400612.1807218,
+    "ast_hash": "ae62979bbdbe14e58880861106766ec1",
+    "semantic_hash": "ae62979bbdbe14e58880861106766ec1"
+  },
+  "literature/manufacturing/a-dissimilarity-based-approach-to-predictive-maintenance-with-application-to-hva.md": {
+    "mtime": 1790399987.7073872,
+    "seen": 1790400612.180723,
+    "ast_hash": "b796fe77fbad5ccbe4eaafd40f08e495",
+    "semantic_hash": "b796fe77fbad5ccbe4eaafd40f08e495"
+  },
+  "literature/manufacturing/a-hybrid-statistical-learning-framework-for-capability-based-decision-support-in.md": {
+    "mtime": 1790399987.7074518,
+    "seen": 1790400612.1807241,
+    "ast_hash": "4158c03d0ea08bf400885de80ae83b76",
+    "semantic_hash": "4158c03d0ea08bf400885de80ae83b76"
+  },
+  "literature/manufacturing/additivellm-large-language-models-predict-defects-in-additive-manufacturing.md": {
+    "mtime": 1790399987.7070305,
+    "seen": 1790400612.1807256,
+    "ast_hash": "12f144da2bba308d0aea5783e675185a",
+    "semantic_hash": "12f144da2bba308d0aea5783e675185a"
+  },
+  "literature/manufacturing/deepinspect-an-ai-powered-defect-detection-for-manufacturing-industries.md": {
+    "mtime": 1790399987.7071574,
+    "seen": 1790400612.1807268,
+    "ast_hash": "1573ddd2f9b1eb9882f7becb6d370ac9",
+    "semantic_hash": "1573ddd2f9b1eb9882f7becb6d370ac9"
+  },
+  "literature/manufacturing/grain-refinement-of-stainless-steel-in-ultrasound-assisted-additive-manufacturin.md": {
+    "mtime": 1790399987.7075143,
+    "seen": 1790400612.1807284,
+    "ast_hash": "68d853fe446b8c25f0f6250547374d5c",
+    "semantic_hash": "68d853fe446b8c25f0f6250547374d5c"
+  },
+  "literature/manufacturing/stress-flow-guided-non-planar-print-trajectory-optimization-for-additive-manufac.md": {
+    "mtime": 1790399987.7067125,
+    "seen": 1790400612.1807296,
+    "ast_hash": "fab5970a1004f4b927057aaaec3dcfdc",
+    "semantic_hash": "fab5970a1004f4b927057aaaec3dcfdc"
+  },
+  "literature/manufacturing/taxonomy-for-cybersecurity-threat-attributes-and-countermeasures-in-smart-manufa.md": {
+    "mtime": 1790399987.7073119,
+    "seen": 1790400612.1807308,
+    "ast_hash": "4580f1d3e592a0760f9c2ccefdf6bf09",
+    "semantic_hash": "4580f1d3e592a0760f9c2ccefdf6bf09"
+  },
+  "literature/manufacturing/transferd2-automated-defect-detection-approach-in-smart-manufacturing-using-tran.md": {
+    "mtime": 1790399987.7072377,
+    "seen": 1790400612.1807323,
+    "ast_hash": "ff1a4f72ccec3252d92a5ed5423ad2da",
+    "semantic_hash": "ff1a4f72ccec3252d92a5ed5423ad2da"
+  },
+  "literature/medicine/accountable-ai-with-grounded-faithful-consistent-actionable-rationales-a-case-st.md": {
+    "mtime": 1790399987.675405,
+    "seen": 1790400612.1807337,
+    "ast_hash": "3a5ca3a6e6493e9cc5ad231b2d00254e",
+    "semantic_hash": "3a5ca3a6e6493e9cc5ad231b2d00254e"
+  },
+  "literature/medicine/assurance-for-clinical-trial-design-with-normally-distributed-outcomes-eliciting.md": {
+    "mtime": 1790399987.675315,
+    "seen": 1790400612.1807353,
+    "ast_hash": "f5864142e1994b20c879ba402711b942",
+    "semantic_hash": "f5864142e1994b20c879ba402711b942"
+  },
+  "literature/medicine/calibration-of-clinical-trial-sample-size-based-on-design-utility.md": {
+    "mtime": 1790399987.675635,
+    "seen": 1790400612.1807365,
+    "ast_hash": "31dd75a56d226fd0e7d1bce70de2c532",
+    "semantic_hash": "31dd75a56d226fd0e7d1bce70de2c532"
+  },
+  "literature/medicine/covariate-adjustment-in-randomized-clinical-trials-with-missing-covariate-and-ou.md": {
+    "mtime": 1790399987.6750543,
+    "seen": 1790400612.180739,
+    "ast_hash": "9acc41c63c118700a41345bb85fffea8",
+    "semantic_hash": "9acc41c63c118700a41345bb85fffea8"
+  },
+  "literature/medicine/data-mining-session-based-patient-reported-outcomes-pros-in-a-mental-health-sett.md": {
+    "mtime": 1790399987.6739335,
+    "seen": 1790400612.18074,
+    "ast_hash": "16f3b6741f53a8031998165b9fddbd98",
+    "semantic_hash": "16f3b6741f53a8031998165b9fddbd98"
+  },
+  "literature/medicine/enhancing-longitudinal-clinical-trial-efficiency-with-digital-twins-and-prognost.md": {
+    "mtime": 1790399987.6751578,
+    "seen": 1790400612.1807413,
+    "ast_hash": "7df917d4b827b991e80bc562144a9c2c",
+    "semantic_hash": "7df917d4b827b991e80bc562144a9c2c"
+  },
+  "literature/medicine/garbage-collection-makes-rust-easier-to-use-a-randomized-controlled-trial-of-the.md": {
+    "mtime": 1790399987.6757178,
+    "seen": 1790400612.1807427,
+    "ast_hash": "ac562411e021bbebfe4123d5e8c41e08",
+    "semantic_hash": "ac562411e021bbebfe4123d5e8c41e08"
+  },
+  "literature/medicine/prompt-compression-in-production-task-orchestration-a-pre-registered-randomized-.md": {
+    "mtime": 1790399987.6754708,
+    "seen": 1790400612.180744,
+    "ast_hash": "c456819368e06ab058847c73405108e4",
+    "semantic_hash": "c456819368e06ab058847c73405108e4"
+  }
+}

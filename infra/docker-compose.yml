@@ -1,0 +1,144 @@
+name: rag-poc
+
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "127.0.0.1:6333:6333"
+      - "127.0.0.1:6334:6334"
+    volumes:
+      - qdrant-data:/qdrant/storage
+
+  embeddings:
+    # cpu-1.5 has a live-confirmed bug where config.json download fails with
+    # "relative URL without a base" during startup; cpu-1.8 fixes it.
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.8
+    # --max-batch-tokens/--auto-truncate cap the warmup batch: bge-m3's default
+    # 8192-token max-input-length caused an OOM kill during model warmup
+    # otherwise (confirmed live). Titles+abstracts are far under 2048 tokens.
+    command: ["--model-id", "BAAI/bge-m3", "--max-batch-tokens", "2048", "--auto-truncate"]
+    ports:
+      - "127.0.0.1:8081:80"
+    volumes:
+      - tei-embeddings-data:/data
+
+  reranker:
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.8
+    command: ["--model-id", "BAAI/bge-reranker-v2-m3", "--max-batch-tokens", "2048", "--auto-truncate"]
+    ports:
+      - "127.0.0.1:8082:80"
+    volumes:
+      - tei-reranker-data:/data
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml:ro
+    ports:
+      - "127.0.0.1:4317:4317"
+      - "127.0.0.1:4318:4318"
+    depends_on:
+      - prometheus
+      - loki
+      - tempo
+
+  prometheus:
+    image: prom/prometheus:latest
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--web.enable-remote-write-receiver"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "127.0.0.1:9090:9090"
+
+  loki:
+    image: grafana/loki:latest
+    command: ["-config.file=/etc/loki/loki-config.yaml"]
+    volumes:
+      - ./loki-config.yaml:/etc/loki/loki-config.yaml:ro
+      - loki-data:/loki
+    ports:
+      - "127.0.0.1:3100:3100"
+
+  tempo:
+    image: grafana/tempo:latest
+    command: ["-config.file=/etc/tempo/tempo.yaml"]
+    volumes:
+      - ./tempo.yaml:/etc/tempo/tempo.yaml:ro
+      - tempo-data:/var/tempo
+    ports:
+      - "127.0.0.1:3200:3200"
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_ADMIN_PASSWORD:-admin}"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      - prometheus
+      - loki
+      - tempo
+
+  backend:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    env_file:
+      - ../.env
+    environment:
+      QDRANT_URL: http://qdrant:6333
+      EMBEDDINGS_URL: http://embeddings:80
+      RERANKER_URL: http://reranker:80
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      - qdrant
+      - embeddings
+      - reranker
+      - otel-collector
+
+  frontend:
+    build:
+      context: ../frontend
+    environment:
+      NEXT_PUBLIC_BACKEND_URL: http://localhost:8000
+    ports:
+      - "127.0.0.1:3001:3000"
+    depends_on:
+      - backend
+
+  k6:
+    image: grafana/k6:latest
+    profiles: ["loadtest"]
+    command:
+      - run
+      - "--out"
+      - "experimental-prometheus-rw"
+      - "/scripts/health_check_load.js"
+    environment:
+      BASE_URL: http://backend:8000
+      K6_PROMETHEUS_RW_SERVER_URL: http://prometheus:9090/api/v1/write
+    volumes:
+      - ../load-tests/k6:/scripts:ro
+    depends_on:
+      - backend
+      - prometheus
+
+volumes:
+  qdrant-data:
+  tei-embeddings-data:
+  tei-reranker-data:
+  prometheus-data:
+  loki-data:
+  tempo-data:
+  grafana-data:

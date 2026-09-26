@@ -1,0 +1,111 @@
+/* Mobile-first: base rules target small screens; min-width queries below
+   progressively enhance for tablet/desktop. */
+
+.page {
+  composes: page-shell from global;
+}
+
+/* ---- Masthead ----
+   Flush-left, no centered column: the h1/subtitle are capped at a narrow
+   measure while the page shell itself runs the full available width, so
+   the empty space to the right of the text is a deliberate gutter rather
+   than a centered card. */
+
+.masthead {
+  margin-bottom: var(--space-7);
+  max-width: 34rem;
+}
+
+.title {
+  font-size: var(--font-size-hero);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-4);
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+}
+
+/* ---- Console ----
+   Replaces the old bordered/shadowed search card. No card-shell, no
+   border, no radius: a single heavy top rule in the accent color is the
+   only chrome, reading as a piece of equipment rather than a form panel. */
+
+.console {
+  border-top: 0.25rem solid var(--accent);
+  padding-top: var(--space-5);
+}
+
+.fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.fieldset:disabled {
+  opacity: 0.65;
+}
+
+/* ---- Results ---- */
+
+.results {
+  margin-top: var(--space-7);
+}
+
+.emptyState {
+  margin: 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--gridline);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+}
+
+/* Loading */
+
+.loadingPanel {
+  animation: fadeInUp var(--duration-base) var(--ease-out-soft) both;
+}
+
+.loadingLabel {
+  margin: 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--gridline);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.loadingRail {
+  position: relative;
+  display: block;
+  width: 5rem;
+  height: 0.1875rem; /* 3px */
+  background: var(--gridline);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.loadingSweep {
+  position: absolute;
+  inset: 0;
+  width: 30%;
+  background: var(--accent);
+  animation: sweep 1.1s linear infinite;
+}

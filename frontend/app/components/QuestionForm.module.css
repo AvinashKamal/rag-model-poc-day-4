@@ -1,0 +1,101 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.label {
+  composes: eyebrow from global;
+  display: block;
+  color: var(--text-secondary);
+}
+
+/* No box: a large, borderless display field. The only chrome is a
+   border-bottom rule that thickens on focus, so typing reads as writing
+   directly on the page rather than filling in a form field. */
+.textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 3.5rem;
+  font-family: inherit;
+  font-size: var(--font-size-composer);
+  font-weight: 500;
+  line-height: 1.35;
+  padding: 0 0 var(--space-3);
+  border: none;
+  border-bottom: 0.125rem solid var(--border-hairline);
+  background: transparent;
+  color: var(--text-primary);
+  transition: border-bottom-color var(--duration-fast) var(--ease-out-soft),
+    border-bottom-width var(--duration-fast) var(--ease-out-soft);
+}
+
+.textarea::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.textarea:focus {
+  outline: none;
+  border-bottom-width: 0.25rem;
+  border-bottom-color: var(--accent);
+}
+
+.submitRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+@media (min-width: 30em) {
+  .submitRow {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.submitHint {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.submitButton {
+  background: var(--accent);
+  color: var(--on-accent);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--font-size-md);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out-soft),
+    transform var(--duration-fast) var(--ease-out-soft);
+  white-space: nowrap;
+  align-self: stretch;
+}
+
+@media (min-width: 30em) {
+  .submitButton {
+    align-self: auto;
+  }
+}
+
+.submitButton:hover:not(:disabled) {
+  background: var(--accent-strong);
+}
+
+.submitButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.submitButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

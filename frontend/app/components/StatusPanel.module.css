@@ -1,0 +1,72 @@
+/* Not `composes: card-shell` here: the left accent stripe below is a
+   longhand override of card-shell's border shorthand, and relying on
+   cascade order across two equal-specificity selectors to win that
+   override is fragile (see the compound-selector note further down).
+   Writing the border directly in one rule avoids the ambiguity. */
+.panel {
+  background: var(--surface-1);
+  border: 1px solid var(--border-hairline);
+  border-left: 0.25rem solid var(--border-hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-5);
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  animation: stampIn var(--duration-dramatic) var(--ease-snap) both;
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: #fff;
+  animation: stampIn var(--duration-dramatic) var(--ease-snap) both;
+  animation-delay: var(--duration-fast);
+}
+
+.body {
+  flex: 1;
+}
+
+.title {
+  margin: 0 0 var(--space-1);
+  font-weight: 650;
+  font-size: var(--font-size-base);
+}
+
+.message {
+  margin: 0;
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* Compound selectors (.panel.error, not just .error) so these overrides
+   win on specificity alone, regardless of where the composed card-shell
+   rule lands in the final stylesheet order. */
+.panel.error {
+  background: color-mix(in srgb, var(--status-critical) 6%, var(--surface-1));
+  border-color: color-mix(in srgb, var(--status-critical) 35%, var(--border-hairline));
+}
+
+.error .icon {
+  background: var(--status-critical);
+}
+
+.panel.abstain {
+  background: color-mix(in srgb, var(--status-warning) 10%, var(--surface-1));
+  border-color: color-mix(in srgb, var(--status-warning) 45%, var(--border-hairline));
+}
+
+.abstain .icon {
+  background: var(--status-warning);
+  color: #3a2900;
+}

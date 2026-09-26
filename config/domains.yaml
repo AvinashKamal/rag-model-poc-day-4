@@ -1,0 +1,173 @@
+# Domain registry — single source of truth for which literature domains the
+# POC supports, what counts as "in domain" (keywords), which corpus sources are
+# valid per domain, and where each domain's eval gold set lives.
+#
+# Consumed by shared/domain_lib (see shared/domain_lib/src/domain_lib/registry.py).
+# Architecture rationale: /home/labuser/.claude/plans/you-are-a-professional-vast-papert.md, §1.
+
+domains:
+  - id: medicine
+    display_name: Medicine
+    enabled: true
+    keywords:
+      - patient
+      - clinical
+      - trial
+      - disease
+      - treatment
+      - diagnosis
+      - therapy
+      - drug
+      - dosage
+      - symptom
+      - pathology
+      - epidemiology
+      - vaccine
+      - clinical trial
+      - cohort
+      - randomized
+      - adverse event
+      - comorbidity
+      - biomarker
+      - placebo
+    sources:
+      - arxiv
+      - pubmed
+      - semantic_scholar
+    default_query: "clinical trial outcomes randomized controlled study"
+    gold_questions: eval/gold_questions/medicine.jsonl
+
+  - id: logistics
+    display_name: Logistics
+    enabled: true
+    keywords:
+      - supply chain
+      - warehouse
+      - shipment
+      - inventory
+      - freight
+      - route optimization
+      - fleet
+      - distribution
+      - cold chain
+      - carrier
+      - lead time
+      - procurement
+      - last mile
+      - demand forecasting
+      - order fulfillment
+      - logistics network
+    sources:
+      - arxiv
+      - semantic_scholar
+    default_query: "supply chain optimization freight logistics"
+    gold_questions: eval/gold_questions/logistics.jsonl
+
+  - id: manufacturing
+    display_name: Manufacturing
+    enabled: true
+    keywords:
+      - defect rate
+      - statistical process control
+      - predictive maintenance
+      - assembly line
+      - six sigma
+      - root cause analysis
+      - quality control
+      - lean manufacturing
+      - process capability
+      - yield rate
+      - cycle time
+      - work in progress
+      - equipment failure
+      - condition monitoring
+      - throughput
+      - production line
+    sources:
+      - arxiv
+      - semantic_scholar
+    default_query: "predictive maintenance defect detection manufacturing process"
+    gold_questions: eval/gold_questions/manufacturing.jsonl
+
+  - id: agriculture
+    display_name: Agriculture
+    enabled: true
+    keywords:
+      - crop yield
+      - precision agriculture
+      - soil health
+      - irrigation
+      - agronomy
+      - pest management
+      - livestock
+      - sustainable farming
+      - remote sensing
+      - fertilizer
+      - crop rotation
+      - soil moisture
+      - harvest
+      - plant breeding
+      - farmland
+      - agricultural yield
+      - food security
+      - smart farming
+    sources:
+      - arxiv
+      - semantic_scholar
+      - pubmed
+    default_query: "precision agriculture crop yield prediction remote sensing"
+    gold_questions: eval/gold_questions/agriculture.jsonl
+
+  - id: environmental_science
+    display_name: Environmental Science
+    enabled: true
+    keywords:
+      - climate change
+      - emissions
+      - sustainability
+      - ecology
+      - biodiversity
+      - pollution
+      - environmental impact assessment
+      - carbon footprint
+      - renewable resources
+      - greenhouse gas
+      - ecosystem
+      - deforestation
+      - air quality
+      - water quality
+      - conservation
+      - land use change
+      - environmental monitoring
+    sources:
+      - arxiv
+      - semantic_scholar
+      - pubmed
+    default_query: "climate change environmental impact assessment emissions"
+    gold_questions: eval/gold_questions/environmental_science.jsonl
+
+  - id: energy
+    display_name: Energy
+    enabled: true
+    keywords:
+      - renewable energy
+      - energy storage
+      - grid
+      - photovoltaic
+      - battery
+      - energy efficiency
+      - power systems
+      - decarbonization
+      - wind turbine
+      - solar cell
+      - smart grid
+      - energy consumption
+      - fuel cell
+      - electric vehicle
+      - power generation
+      - demand response
+    sources:
+      - arxiv
+      - semantic_scholar
+    default_query: "renewable energy storage grid integration"
+    gold_questions: eval/gold_questions/energy.jsonl

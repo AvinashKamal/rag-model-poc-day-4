@@ -1,0 +1,107 @@
+{
+  "title": "RAG App",
+  "uid": "rag-app",
+  "schemaVersion": 39,
+  "tags": ["rag-poc", "backend"],
+  "time": { "from": "now-1h", "to": "now" },
+  "refresh": "30s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Request latency p95 (ms)",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_server_duration_milliseconds_bucket[5m])) by (le))",
+          "legendFormat": "p95",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "fixed", "fixedColor": "#2a78d6" },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 0,
+            "thresholdsStyle": { "mode": "line" }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": null, "color": "#0ca30c" },
+              { "value": 2000, "color": "#fab219" },
+              { "value": 5000, "color": "#d03b3b" }
+            ]
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 2,
+      "title": "Retrieval hit-rate",
+      "type": "gauge",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        { "expr": "100 * avg(rag_retrieval_hit_rate)", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": null, "color": "#d03b3b" },
+              { "value": 70, "color": "#fab219" },
+              { "value": 85, "color": "#0ca30c" }
+            ]
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 3,
+      "title": "Token usage (tokens/min)",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 8, "w": 24, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "sum(rate(rag_llm_tokens_total{token_type=\"prompt\"}[5m])) * 60",
+          "legendFormat": "prompt",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(rag_llm_tokens_total{token_type=\"completion\"}[5m])) * 60",
+          "legendFormat": "completion",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "lineWidth": 2, "fillOpacity": 0 }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "prompt" },
+            "properties": [
+              { "id": "color", "value": { "mode": "fixed", "fixedColor": "#2a78d6" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "completion" },
+            "properties": [
+              { "id": "color", "value": { "mode": "fixed", "fixedColor": "#eb6834" } }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

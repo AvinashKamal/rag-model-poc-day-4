@@ -1,0 +1,80 @@
+/* Bibliography entry, not a card: no shell, no shadow. A hairline top
+   rule separates entries, and the oversized mono numeral is the only
+   strong visual anchor, borrowed from print bibliography numbering. */
+.card {
+  display: flex;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--gridline);
+  animation: fadeInUp var(--duration-base) var(--ease-out-soft) both;
+  scroll-margin-top: var(--space-4);
+}
+
+.card:target {
+  border-top-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+/* Not `composes: eyebrow` here: eyebrow's own font-size/letter-spacing
+   would conflict with the oversized-numeral treatment below, and that
+   override would depend on cascade order between this file's stylesheet
+   and globals.css. Writing the mono treatment directly sidesteps it. */
+.index {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--gridline);
+  line-height: 1;
+  flex-shrink: 0;
+  min-width: 2ch;
+}
+
+.card:target .index {
+  color: var(--accent-strong);
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+}
+
+.head {
+  margin-bottom: var(--space-2);
+}
+
+.title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.title:hover {
+  text-decoration: underline;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.domainBadge {
+  composes: eyebrow from global;
+  background: var(--surface-1);
+  border: 1px solid var(--border-hairline);
+  padding: 0.1rem var(--space-2);
+  color: var(--text-secondary);
+}
+
+.source {
+  font-family: var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

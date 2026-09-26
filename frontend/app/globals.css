@@ -1,0 +1,257 @@
+/* Design tokens.
+   --surface-*, --text-*, --border-hairline, --gridline, and the four
+   --status-* values are the AA-verified v1 tokens and are left byte-for-
+   byte untouched here. Only the accent hue (blue -> vermillion) and the
+   shape/type/motion systems change for v2. Every accent/meter hex below
+   was recomputed against WCAG AA (>=4.5:1 for text pairs) rather than
+   carried over by eye; see the frontend agent's verification notes for
+   the exact ratios. */
+
+:root {
+  color-scheme: light;
+
+  /* Color: surfaces/text/borders/status untouched from v1. */
+  --surface-1: #fcfcfb; /* card / panel surface */
+  --surface-page: #f9f9f7; /* page background */
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #6a6864;
+  --border-hairline: rgba(11, 11, 11, 0.1);
+  --gridline: #e1e0d9;
+
+  /* Accent: vermillion / signal orange, replacing v1's blue.
+     #C7381A vs #ffffff = 5.24:1, vs surface-1 (text use) = 5.10:1. */
+  --accent: #c7381a;
+  /* Darker step for hover fills and link/citation text: 7.39:1 vs white,
+     7.20:1 vs surface-1, 7.01:1 vs surface-page. */
+  --accent-strong: #9e2d15;
+  /* Opaque light fill for selected chips/badges (not a translucent wash,
+     so it reads as a flat "stamped" fill): 5.79:1 vs --accent-strong text. */
+  --accent-soft: #f8ded8;
+  --accent-wash: rgba(199, 56, 26, 0.08);
+  --on-accent: #ffffff;
+
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-serious: #ec835a;
+  --status-critical: #d03b3b;
+
+  /* Sequential vermillion ramp, low -> high magnitude, for the relevance
+     meter. Same hue/lightness-step structure as the v1 blue ramp. */
+  --meter-track: #fbd5cd;
+  --meter-1: #fbd5cd;
+  --meter-2: #ef9886;
+  --meter-3: #e55739;
+  --meter-4: #ab351c;
+  --meter-5: #6b1d0d;
+
+  /* Type. Archivo (--font-archivo) and IBM Plex Mono (--font-plex-mono)
+     are wired onto <html> in app/layout.tsx via next/font/google; the
+     fallback chains here cover the brief window before those load and
+     any environment where the font variable is unset. */
+  --font-sans: var(--font-archivo), system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular",
+    "IBM Plex Mono", monospace;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.8125rem;
+  --font-size-md: 0.875rem;
+  --font-size-base: 1rem; /* 16px floor for primary body copy */
+  --font-size-lg: 1.0625rem;
+  --font-size-xl: 1.75rem;
+  --font-size-2xl: 2.25rem;
+  --font-size-composer: clamp(1.25rem, 2.6vw, 1.75rem);
+  --font-size-hero: clamp(2.75rem, 8.5vw, 5.75rem);
+
+  /* Spacing scale: reference these, don't sprinkle raw rem values. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* Shape Consistency Lock: every radius token is 0. Every chip/card/
+     button in the app draws from these four tokens, so this is the whole
+     app's corner system flipped to sharp in one place. */
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-pill: 0;
+
+  /* Layout */
+  --content-max-width: 74rem;
+
+  /* Motion. --duration-fast/base + --ease-out-soft stay for the handful of
+     calm micro-transitions (chip hover, meter fill); --duration-dramatic +
+     --ease-snap drive the new state-change signals (stampIn, sweep). The
+     global prefers-reduced-motion block below disables all animation and
+     transition duration wholesale, so both tiers collapse to static for
+     free without per-component guards. */
+  --duration-fast: 150ms;
+  --duration-base: 220ms;
+  --duration-dramatic: 420ms;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap: cubic-bezier(0.83, 0, 0.17, 1);
+  --anim-distance: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --surface-1: #1a1a19;
+    --surface-page: #0d0d0d;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --border-hairline: rgba(255, 255, 255, 0.1);
+    --gridline: #2c2c2a;
+
+    /* #FF6B3D vs on-accent ink #1c0a06 = 6.78:1. */
+    --accent: #ff6b3d;
+    /* Lighter step for hover fills/link text. Paired with the dark
+       on-accent ink below, never white: white-on-#FF8F66 measures 2.24:1
+       (fails AA); #FF8F66 vs #1c0a06 = 8.56:1, vs surface-1 = 7.77:1, vs
+       surface-page = 8.67:1. */
+    --accent-strong: #ff8f66;
+    /* Opaque dark fill for selected chips/badges: 6.25:1 vs
+       --accent-strong text. */
+    --accent-soft: #4c1e10;
+    --accent-wash: rgba(255, 107, 61, 0.14);
+    /* Dark warm ink, not white: see --accent-strong note above. */
+    --on-accent: #1c0a06;
+
+    --status-good: #0ca30c;
+    --status-warning: #fab219;
+    --status-serious: #ec835a;
+    --status-critical: #e66767;
+
+    --meter-track: #5c2514;
+    --meter-1: #5c2514;
+    --meter-2: #ab3e1c;
+    --meter-3: #bf4924;
+    --meter-4: #e56239;
+    --meter-5: #ef9f86;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background: var(--surface-page);
+}
+
+a {
+  color: var(--accent-strong);
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Shared entrance animation: a small, decisive rise. Components opt in
+   with `animation: fadeInUp ...` and may stagger via animation-delay. */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(var(--anim-distance));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* State-change signal: a brief inward settle, used wherever the UI needs
+   to announce "this just changed" (status panel appearing, a chip being
+   punched in) without a bouncy/playful spring. */
+@keyframes stampIn {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Loading-bar sweep: a signal block travels across a fixed-width rail.
+   Transform-only so it stays smooth and collapses cleanly under
+   prefers-reduced-motion. */
+@keyframes sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(320%);
+  }
+}
+
+/* Shared skeleton shimmer, used by any loading placeholder. */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ---- Shared component classes ----
+   Card-shell, eyebrow, and page-shell were each copy-pasted across several
+   component stylesheets. Centralized here so every card/label/page-wrapper
+   draws from the same rule instead of re-declaring it. Components compose
+   these with `composes: <name> from global;` and layer their own layout
+   (padding, gap, radius) on top.
+
+   Radius scale rule (Shape Consistency Lock): every surface uses the
+   --radius-* tokens above, which are all 0 -- there is exactly one corner
+   family in this app, sharp. */
+
+.card-shell {
+  background: var(--surface-1);
+  border: 1px solid var(--border-hairline);
+  animation: fadeInUp var(--duration-dramatic) var(--ease-snap) both;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.page-shell {
+  max-width: var(--content-max-width);
+  margin: 0;
+  padding: clamp(1.5rem, 5vw, 3rem) clamp(1rem, 4vw, 2.5rem)
+    clamp(3rem, 8vw, 5rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
